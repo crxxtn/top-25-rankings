@@ -18,18 +18,26 @@
 
 <table>
     <tr>
-        <th>Rank</th>
+        <th>Current</th>
+        <th>Previous</th>
         <th>Team</th>
-        <th>Votes</th>
-        <th>Trend</th>
-        <th>Record</th>
+        <th>Points</th>
+        <th>Ranking Difference</th>
     </tr>
     {#each rankings as ranking}
-        <p>Current {ranking.current}</p>
-        <p>Previous {ranking.previous}</p>
-        <p>Points {ranking.points}</p>
-        <p>First Place Votes {ranking.firstPlaceVotes}</p>
-        <p>Team {ranking.team.nickname} {ranking.team.name}</p>
-        <p>Logo {ranking.team.logo}</p>
+      <tr>
+      <td>{ranking.current}</td>
+      <td>{ranking.previous}</td>
+      <td>
+        <img class="inline-block w-8 h-8" src={ranking.team.logo} alt={ranking.team.name} />
+        {ranking.team.nickname} {ranking.team.name}
+      </td>
+      <td>
+        {ranking.points} ({ranking.firstPlaceVotes})
+      </td>
+      <td>
+        {ranking.previous - ranking.current}
+      </td>
+      </tr>
     {/each}
 </table>
