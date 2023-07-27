@@ -1,43 +1,63 @@
 <script>
-	import { each } from "svelte/internal";
+	import { bind, each } from 'svelte/internal';
+	import { onMount } from 'svelte';
 
-    fetch('http://site.api.espn.com/apis/site/v2/sports/football/college-football/rankings')
-  .then((response) => {
-    if (response.ok) return response.json();
-    return Promise.reject(response);
-  })
-  .then(function (data) {
-    rankings = data.rankings[0].ranks;
-  })
-  .catch(function (err) {
-    console.warn(err);
-  });
+	function getData() {
+		fetch('http://site.api.espn.com/apis/site/v2/sports/football/college-football/rankings')
+			.then((response) => {
+				if (response.ok) return response.json();
+				return Promise.reject(response);
+			})
+			.then(function (data) {
+				if (pollType === 'ap') {
+					rankings = data.rankings[0].ranks;
+				} else {
+					rankings = data.rankings[1].ranks;
+				}
+			})
+			.catch(function (err) {
+				console.warn(err);
+			});
+	}
 
-  let rankings = [];
+	onMount(getData);
+
+	let rankings = [];
+
+	let pollType = 'ap';
 </script>
 
-<table>
-    <tr>
-        <th>Current</th>
-        <th>Previous</th>
-        <th>Team</th>
-        <th>Points</th>
-        <th>Ranking Difference</th>
-    </tr>
-    {#each rankings as ranking}
-      <tr>
-      <td>{ranking.current}</td>
-      <td>{ranking.previous}</td>
-      <td>
-        <img class="inline-block w-8 h-8" src={ranking.team.logo} alt={ranking.team.name} />
-        {ranking.team.nickname} {ranking.team.name}
-      </td>
-      <td>
-        {ranking.points} ({ranking.firstPlaceVotes})
-      </td>
-      <td>
-        {ranking.previous - ranking.current}
-      </td>
-      </tr>
-    {/each}
+<select bind:value={pollType} on:change={getData}>
+	<option value="ap">AP</option>
+	<option value="coaches">Coaches</option>
+</select>
+
+<table class="mx-auto sm:text-xl text-white bg-gray-900">
+	{#each rankings as ranking}
+		<tr class="odd:bg-gray-800">
+			<td class="font-bold text-3xl">{ranking.current.toString().padStart(2, '\xa0')}</td>
+			<td>
+				<img class="inline w-8 mr-2" src={ranking.team.logo} alt={ranking.team.name} />
+				<span class="tracking-wider">{ranking.team.nickname}</span>
+			</td>
+			<td>
+				{ranking.points} ({ranking.firstPlaceVotes})
+			</td>
+			<td
+				class={ranking.trend[0] === '+'
+					? 'text-green-600'
+					: ranking.trend === '-'
+					? 'text-black'
+					: 'text-red-600'}
+			>
+				{ranking.trend}
+			</td>
+		</tr>
+	{/each}
 </table>
+
+<style>
+	td {
+		@apply p-4;
+	}
+</style>
