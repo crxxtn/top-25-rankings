@@ -30,13 +30,8 @@
 		goto(`/${target.value}`);
 	}}
 >
-	<option value="mens-college-basketball">Mens College Basketball</option>
-	<option value="womens-college-basketball">Womens College Basketball</option>
 	<option value="college-football">College Football</option>
-	<!-- <option value="mlb-baseball">MLB Baseball</option>
-	<option value="nba-basketball">NBA Basketball</option>
-	<option value="wnba-basketball">WNBA Basketball</option>
-	<option value="nfl-football">NFL Football</option> -->
+	<!-- <option value="nfl-football">NFL Football</option> -->
 </select>
 <div class="flex items-center justify-between overflow-x-auto">
 	{#each data.rankings as ranking, idx}
