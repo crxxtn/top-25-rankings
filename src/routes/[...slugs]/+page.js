@@ -1,12 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 
 const API_ENDPOINTS = {
-	'mens-college-basketball': '/basketball/mens-college-basketball/rankings',
-	'womens-college-basketball': '/basketball/womens-college-basketball/rankings',
 	'college-football': '/football/college-football/rankings'
-	// 'mlb-baseball': '/baseball/mlb/rankings',
-	// 'nba-basketball': '/basketball/nba/rankings',
-	// 'wnba-basketball': '/basketball/wnba/rankings',
 	// 'nfl-football': '/football/nfl/rankings'
 };
 
